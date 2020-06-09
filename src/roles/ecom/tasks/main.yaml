@@ -1,5 +1,5 @@
 # Create ecom temporary location
-- name: Create Temporary Directory for ecom 
+- name: Create Temporary Directory for ecom
   tempfile:
     path: '{{ app_root_directory }}/tmp'
     state: directory
@@ -20,17 +20,26 @@
 
 - name: Extract {{ siteName }}-{{ ecom_version }}.zip installable
   unarchive:
-    src: "{{ ecom_temp_location.path }}/ecompack/{{ siteName }}-{{ ecom_version }}.zip"
+    src: "{{ ecom_temp_location.path }}/ecompack/{{ siteName }}_{{ ecom_version }}.zip"
     dest: "{{ ecom_temp_location.path }}/ecompack"
     remote_src: yes
   tags:
     - all
     - ecom
 
+- name: Clean artifact from temp location
+  file:
+    state: absent
+    path: "{{ ecom_temp_location.path }}/ecompack/{{ siteName }}_{{ ecom_version }}.zip"
+  tags:
+    - all
+    - ecom
+
+
 # Create folder for ecom pack
 - name: Create ecompack directory
   file:
-    path: "{{ app_root_directory }}/apache2/htdocs/{{ siteName }}"
+    path: "{{ app_root_directory }}/{{ lampdir }}/apache2/htdocs/{{ siteName }}"
     state: directory
     mode: 0755
   tags:
@@ -49,9 +58,7 @@
 
 # Setup ecom on web server
 - name: Copy ecom pack to final path and make it ready for installation
-  copy:
-    src: "{{ ecom_temp_location.path }}/ecompack/"
-    dest: "{{ app_root_directory }}/apache2/htdocs/{{ siteName }}/"
+  shell: cp -rp {{ ecom_temp_location.path }}/ecompack/* {{ app_root_directory }}/{{ lampdir }}/apache2/htdocs/{{ siteName }}/
   tags:
     - all
     - ecom
@@ -64,10 +71,10 @@
     - all
     - ecom
 
-- name: Moving file inside the ecom pack 
+- name: Moving file inside the ecom pack
   copy:
     content: "{{ versiondat.stdout }}"
-    dest: "{{ app_root_directory }}/apache2/htdocs/{{ siteName }}/version.dat"
+    dest: "{{ app_root_directory }}/{{ lampdir }}/apache2/htdocs/{{ siteName }}/version.dat"
   tags:
     - all
     - ecom

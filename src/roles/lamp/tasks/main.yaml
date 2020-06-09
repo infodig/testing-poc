@@ -1,5 +1,5 @@
 # Create lamp temporary location
-- name: Create Temporary Directory for lamp 
+- name: Create Temporary Directory for lamp
   tempfile:
     path: "{{ app_root_directory }}/tmp"
     state: directory
@@ -10,25 +10,23 @@
     - lamp
 
 # Download and extract module
-- name: Download file from a file path
-  win_get_url:
-    url: wget {{ hostname }}/files/stacks/lampstack/{{ lamp_version }}/bitnami-lampstack-{{ lamp_version }}-linux-x64-installer.run 
-    dest: "{{ lamp_temp_location.path }}/lampstack-{{ lamp_version }}.run"
-    checksum: 310e78c930c3e8ac9eb8dd476b656ef6c4201adc
-    checksum_algorithm: sha1
-  tags:
-    - all
-    - lamp
- 
-# Download and extract module
 #- name: Download file from a file path
-#  shell: wget {{ hostname }}/files/stacks/lampstack/{{ lamp_version }}/bitnami-lampstack-{{ lamp_version }}-linux-x64-installer.run -O {{ lamp_temp_location.path }}/lampstack-{{ lamp_version }}.run
+#  get_url:
+#    url: wget {{ hostname }}/files/stacks/lampstack/{{ lamp_version }}/bitnami-lampstack-{{ lamp_version }}-linux-x64-installer.run
+#    dest: "{{ lamp_temp_location.path }}/lampstack-{{ lamp_version }}.run"
 #  tags:
 #    - all
 #    - lamp
 
 # Download and extract module
-#- name: move all split zip into one zip 
+- name: Download file from a file path
+  shell: wget {{ hostname }}/files/stacks/lampstack/{{ lamp_version }}/bitnami-lampstack-{{ lamp_version }}-linux-x64-installer.run -O {{ lamp_temp_location.path }}/lampstack-{{ lamp_version }}.run
+  tags:
+    - all
+    - lamp
+
+# Download and extract module
+#- name: move all split zip into one zip
 #  command: 'cat {{ lamp_temp_location.path }}/lampstack-{{ lamp_version }}.zip.* > {{ lamp_temp_location.path }}/lampstack-{{ lamp_version }}.zip'
 #  tags:
 #    - all
@@ -65,9 +63,7 @@
 
 # Setup lamp on web server
 - name: Copy lamp pack to final path and make it ready for installation
-  copy:
-    src: "{{ lamp_temp_location.path }}"
-    dest: "{{ app_root_directory }}/{{ lampdir }}/"
+  shell: cp -rp {{ lamp_temp_location.path }}/* {{ app_root_directory }}/{{ lampdir }}
   tags:
     - all
     - lamp
@@ -80,7 +76,7 @@
     - all
     - lamp
 
-- name: Moving file inside the lamp pack 
+- name: Moving file inside the lamp pack
   copy:
     content: "{{ versiondat.stdout }}"
     dest: "{{ app_root_directory }}/{{ lampdir }}/version.dat"
