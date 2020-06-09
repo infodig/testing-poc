@@ -1,0 +1,15 @@
+#Url to download the lampstack
+hostname: https://downloads.bitnami.com
+
+# Application versions
+lamp-version: 7.4.6-1
+ecom-version: 1.7.6.5
+
+#Lamp stack installation path
+app_root_directory: /home/ec2-user/
+
+#Folder for LAMP installation
+lampdir: LAMP
+
+# Ecom site name
+siteName: prestashop

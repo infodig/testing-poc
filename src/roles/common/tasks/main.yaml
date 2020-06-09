@@ -1,0 +1,9 @@
+- name: Create a artifcats temp location if it does not exist
+  file:
+     path: '{{ app_root_directory }}/tmp'
+     state: directory
+     mode: '0755'
+  tags:
+    - all
+    - ecom
+    - lamp

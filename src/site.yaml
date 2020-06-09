@@ -1,0 +1,25 @@
+- name: prepare temporary artifact locations
+  hosts: servers
+  roles:
+  - common
+
+- name: Install LAMP
+  hosts: servers
+  roles:
+  - lamp
+
+- name: Install Prestashop
+  hosts: servers
+  roles:
+  - ecom
+
+#- name: Run Configuration
+#  hosts: servers
+#  roles:
+#  - conf
+
+#- name: Data Upload
+#  hosts: servers
+#  roles:
+#  - data  
+ 

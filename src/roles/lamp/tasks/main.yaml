@@ -1,0 +1,89 @@
+# Create lamp temporary location
+- name: Create Temporary Directory for lamp 
+  tempfile:
+    path: "{{ app_root_directory }}/tmp"
+    state: directory
+    prefix: "lamp-"
+  register: lamp-temp-location
+  tags:
+    - all
+    - lamp
+
+# Download and extract module
+- name: Download file from a file path
+  get_url:
+    url: wget {{ hostname }}/files/stacks/lampstack/{{ lamp-version }}/bitnami-lampstack-{{ lamp-version }}-linux-x64-installer.run -O lampstack-{{ lamp-version }}.zip
+    dest: "{{ lamp-temp-location.path }}"
+  tags:
+    - all
+    - lamp
+
+# Download and extract module
+#- name: move all split zip into one zip 
+#  command: 'cat {{ lamp-temp-location.path }}/lampstack-{{ lamp-version }}.zip.* > {{ lamp-temp-location.path }}/lampstack-{{ lamp-version }}.zip'
+#  tags:
+#    - all
+#    - lamp
+
+- name: Extract lampstack-{{ lamp-version }}.zip installable
+  unarchive:
+    src: "{{ lamp-temp-location.path }}/lampstack-{{ lamp-version }}.zip"
+    dest: "{{ lamp-temp-location.path }}"
+    remote_src: yes
+  tags:
+    - all
+    - lamp
+
+# Create folder for lamp pack
+- name: Create lampstack directory
+  file:
+    path: "{{ app_root_directory }}/{{ lampdir }}/"
+    state: directory
+    mode: 0755
+  tags:
+    - all
+    - lamp
+
+# Copy config and properties file in the path
+#-name: copy properties and config file
+# template:
+#   src: "xxxxx.cnf"
+#  dest: "{{ lamp-temp-location.path }}/foldername/finalefilename.cnf"
+# run_once: false
+# tags:
+#   - all
+#   - lamp
+
+# Setup lamp on web server
+- name: Copy lamp pack to final path and make it ready for installation
+  copy:
+    src: "{{ lamp-temp-location.path }}"
+    dest: "{{ app_root_directory }}/{{ lampdir }}/"
+  tags:
+    - all
+    - lamp
+
+# Generating a version.dat file for the application
+- name: Creating content through shell command for version.dat
+  shell: echo lampstack-{{ lamp-version }}
+  resgister: versiondat
+  tags:
+    - all
+    - lamp
+
+- name: Moving file inside the lamp pack 
+  copy:
+    content: "{{ versiondat.stdout }}"
+    dest: "{{ app_root_directory }}/{{ lampdir }}/version.dat"
+  tags:
+    - all
+    - lamp
+
+ # Cleaning of temp directory
+- name: Clean lamp temp location
+  file:
+    state: absent
+    path: "{{ lamp-temp-location.path }}"
+  tags:
+    - all
+    - lamp

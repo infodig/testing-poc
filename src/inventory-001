@@ -1,0 +1,9 @@
+[localhost]
+127.0.0.1 ansible_connection=localhost
+
+[servers]
+18.141.204.253 ansible_user=ec2-user
+
+[001:children]
+servers
+localhost
