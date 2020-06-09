@@ -10,10 +10,17 @@
     - lamp
 
 # Download and extract module
+#- name: Download file from a file path
+#  get_url:
+#    url: wget {{ hostname }}/files/stacks/lampstack/{{ lamp_version }}/bitnami-lampstack-{{ lamp_version }}-linux-x64-installer.run -O lampstack-{{ lamp_version }}.zip
+#    dest: "{{ lamp_temp_location.path }}"
+#  tags:
+#    - all
+#    - lamp
+ 
+# Download and extract module
 - name: Download file from a file path
-  get_url:
-    url: wget {{ hostname }}/files/stacks/lampstack/{{ lamp_version }}/bitnami-lampstack-{{ lamp_version }}-linux-x64-installer.run -O lampstack-{{ lamp_version }}.zip
-    dest: "{{ lamp_temp_location.path }}"
+  shell: wget {{ hostname }}/files/stacks/lampstack/{{ lamp_version }}/bitnami-lampstack-{{ lamp_version }}-linux-x64-installer.run -O {{ lamp_temp_location.path }}
   tags:
     - all
     - lamp
@@ -25,14 +32,14 @@
 #    - all
 #    - lamp
 
-- name: Extract lampstack-{{ lamp_version }}.zip installable
-  unarchive:
-    src: "{{ lamp_temp_location.path }}/lampstack-{{ lamp_version }}.zip"
-    dest: "{{ lamp_temp_location.path }}"
-    remote_src: yes
-  tags:
-    - all
-    - lamp
+#- name: Extract lampstack-{{ lamp_version }}.zip installable
+#  unarchive:
+#    src: "{{ lamp_temp_location.path }}/lampstack-{{ lamp_version }}.zip"
+#    dest: "{{ lamp_temp_location.path }}"
+#    remote_src: yes
+#  tags:
+#    - all
+#    - lamp
 
 # Create folder for lamp pack
 - name: Create lampstack directory

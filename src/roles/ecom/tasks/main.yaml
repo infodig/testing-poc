@@ -20,8 +20,8 @@
 
 - name: Extract {{ siteName }}-{{ ecom_version }}.zip installable
   unarchive:
-    src: "{{ ecom_temp_location.path }}/{{ siteName }}-{{ ecom_version }}.zip"
-    dest: "{{ ecom_temp_location.path }}"
+    src: "{{ ecom_temp_location.path }}/ecompack/{{ siteName }}-{{ ecom_version }}.zip"
+    dest: "{{ ecom_temp_location.path }}/ecompack"
     remote_src: yes
   tags:
     - all
@@ -50,7 +50,7 @@
 # Setup ecom on web server
 - name: Copy ecom pack to final path and make it ready for installation
   copy:
-    src: "{{ ecom_temp_location.path }}"
+    src: "{{ ecom_temp_location.path }}/ecompack/"
     dest: "{{ app_root_directory }}/apache2/htdocs/{{ siteName }}/"
   tags:
     - all
