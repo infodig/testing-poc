@@ -1,14 +1,29 @@
-
-# setup environement 
+# setup environement
 - name: update .bashrc file with required changes
-  shell: echo "export PATH={{ app_root_directory }/{{lampdir}}:{{ app_root_directory }/{{lampdir}}/apache2/bin:{{ app_root_directory }/{{lampdir}}/mysql/bin:$PATH"  >> ~/.bashrc ; echo ". ~/.aliases" >> ~/.bashrc
+  shell: |
+    echo "# .bashrc " > ~/.bashrc
+    echo "" >> ~/.bashrc
+    echo "# Source global definitions" >> ~/.bashrc
+    echo "if [ -f /etc/bashrc ]; then " >> ~/.bashrc
+    echo "       . /etc/bashrc " >> ~/.bashrc
+    echo "fi" >> ~/.bashrc
+    echo "" >> ~/.bashrc
+    echo "# Uncomment the following line if you don't like systemctl's auto-paging feature:" >> ~/.bashrc
+    echo "# export SYSTEMD_PAGER=" >> ~/.bashrc
+    echo "# User specific aliases and functions " >> ~/.bashrc
+    echo ""  >> ~/.bashrc
+    echo "export PATH={{ app_root_directory }}/{{ lampdir }}:{{ app_root_directory }}/{{ lampdir }}/apache2/bin:{{ app_root_directory }}/{{ lampdir }}/mysql/bin"  >> ~/.bashrc
+    echo ". ~/.aliases" >> ~/.bashrc
   tags:
-    - all
     - setenv
-    
+
 #update aliases so the services can be start and stop
-- name: update .aliases file 
-  shell: echo "alias mysqlr='mysql -u root -p'" >> ~.aliases ;echo "alias runmysql='ctlscript.sh start mysql' " >> ~.aliases echo "alias stopmysql='ctlscript.sh stop mysql' " >> ~.aliases ;echo "alias runapache='ctlscript.sh start apache' " >> ~.aliases ;echo "alias stopapache='ctlscript.sh stop apache' " >> ~.aliases
+- name: update .aliases file
+  shell: |
+    echo "alias mysqlr='mysql -u root -p'" > ~/.aliases
+    echo "alias runmysql='ctlscript.sh start mysql'" >> ~/.aliases
+    echo "alias stopmysql='ctlscript.sh stop mysql'" >> ~/.aliases
+    echo "alias runapache='ctlscript.sh start apache'" >> ~/.aliases
+    echo "alias stopapache='ctlscript.sh stop apache'" >> ~/.aliases
   tags:
-    - all
     - setenv
