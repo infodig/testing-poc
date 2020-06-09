@@ -12,7 +12,7 @@
 # Download and extract module
 - name: Download file from a file path
   get_url:
-    url: wget {{ hostname }}/files/stacks/lampstack/{{ lamp-version }}/bitnami-lampstack-{{ lamp-version }}-linux-x64-installer.run -O lampstack-{{ lamp-version }}.zip
+    url: wget {{ hostname }}/files/stacks/lampstack/{{ lamp_version }}/bitnami-lampstack-{{ lamp_version }}-linux-x64-installer.run -O lampstack-{{ lamp_version }}.zip
     dest: "{{ lamp_temp_location.path }}"
   tags:
     - all
@@ -20,14 +20,14 @@
 
 # Download and extract module
 #- name: move all split zip into one zip 
-#  command: 'cat {{ lamp_temp_location.path }}/lampstack-{{ lamp-version }}.zip.* > {{ lamp_temp_location.path }}/lampstack-{{ lamp-version }}.zip'
+#  command: 'cat {{ lamp_temp_location.path }}/lampstack-{{ lamp_version }}.zip.* > {{ lamp_temp_location.path }}/lampstack-{{ lamp_version }}.zip'
 #  tags:
 #    - all
 #    - lamp
 
-- name: Extract lampstack-{{ lamp-version }}.zip installable
+- name: Extract lampstack-{{ lamp_version }}.zip installable
   unarchive:
-    src: "{{ lamp_temp_location.path }}/lampstack-{{ lamp-version }}.zip"
+    src: "{{ lamp_temp_location.path }}/lampstack-{{ lamp_version }}.zip"
     dest: "{{ lamp_temp_location.path }}"
     remote_src: yes
   tags:
@@ -65,7 +65,7 @@
 
 # Generating a version.dat file for the application
 - name: Creating content through shell command for version.dat
-  shell: echo lampstack-{{ lamp-version }}
+  shell: echo lampstack-{{ lamp_version }}
   register: versiondat
   tags:
     - all

@@ -2,8 +2,8 @@
 hostname: https://downloads.bitnami.com
 
 # Application versions
-lamp-version: 7.4.6-1
-ecom-version: 1.7.6.5
+lamp_version: 7.4.6-1
+ecom_version: 1.7.6.5
 
 #Lamp stack installation path
 app_root_directory: /home/anil/

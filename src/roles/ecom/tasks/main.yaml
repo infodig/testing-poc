@@ -18,9 +18,9 @@
     - all
     - ecom
 
-- name: Extract {{ siteName }}-{{ ecom-version }}.zip installable
+- name: Extract {{ siteName }}-{{ ecom_version }}.zip installable
   unarchive:
-    src: "{{ ecom_temp_location.path }}/{{ siteName }}-{{ ecom-version }}.zip"
+    src: "{{ ecom_temp_location.path }}/{{ siteName }}-{{ ecom_version }}.zip"
     dest: "{{ ecom_temp_location.path }}"
     remote_src: yes
   tags:
@@ -58,7 +58,7 @@
 
 # Generating a version.dat file for the application
 - name: Creating content through shell command for version.dat
-  shell: echo {{ siteName }}-{{ ecom-version }}
+  shell: echo {{ siteName }}-{{ ecom_version }}
   register: versiondat
   tags:
     - all
