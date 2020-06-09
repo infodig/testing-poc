@@ -59,7 +59,7 @@
 # Generating a version.dat file for the application
 - name: Creating content through shell command for version.dat
   shell: echo {{ siteName }}-{{ ecom-version }}
-  resgister: versiondat
+  register: versiondat
   tags:
     - all
     - ecom

@@ -66,7 +66,7 @@
 # Generating a version.dat file for the application
 - name: Creating content through shell command for version.dat
   shell: echo lampstack-{{ lamp-version }}
-  resgister: versiondat
+  register: versiondat
   tags:
     - all
     - lamp
