@@ -13,6 +13,11 @@
   roles:
   - ecom
 
+- name: Set env variables
+  hosts: servers
+  roles:
+  - setenv
+
 #- name: Run Configuration
 #  hosts: servers
 #  roles:
